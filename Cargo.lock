@@ -16,8 +16,8 @@ checksum = "2fd1289c04a9ea8cb22300a459a72a385d7c73d3259e2ed7dcb2af674838cfa9"
 
 [[package]]
 name = "dagger"
-version = "0.1.7"
-source = "git+https://github.com/seb-hyland/dagger.git#6345e4d56926478924d304dec36647d73a82a285"
+version = "0.1.9"
+source = "git+https://github.com/seb-hyland/dagger.git#c2c3f3e2d150f17b37730cbb99ebeb41c51038a9"
 dependencies = [
  "dagger-macros",
  "layout-rs",
@@ -26,7 +26,7 @@ dependencies = [
 [[package]]
 name = "dagger-macros"
 version = "0.1.0"
-source = "git+https://github.com/seb-hyland/dagger.git#6345e4d56926478924d304dec36647d73a82a285"
+source = "git+https://github.com/seb-hyland/dagger.git#c2c3f3e2d150f17b37730cbb99ebeb41c51038a9"
 dependencies = [
  "quote",
  "syn",

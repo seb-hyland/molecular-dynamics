@@ -40,18 +40,19 @@ fn tleap(input: &Path, molecule_name: &str) -> WorkflowResult {
         outputs = [prmtop, inpcrd, solvated_pdb],
         dependencies = ["!", "tleap"],
         process = r#"
-        echo "
-            source leaprc.water.tip3p
-            source leaprc.protein.ff14SB
-            mol = loadpdb $input
-            solvateBox mol TIP3PBOX 10
-            addions mol Na+ 0
-            addions mol Cl- 0
-            saveamberparm mol $prmtop $inpcrd
-            savepdb mol $solvated_pdb
-            quit
-        " > tleap.in
-        tleap -f tleap.in > tleap.log
+            PATH=/arc/project/st-shallam-1/igem-2025/molecular-dynamics/.pixi/envs/default/bin/:$PATH
+            echo "
+                source leaprc.water.tip3p
+                source leaprc.protein.ff14SB
+                mol = loadpdb $input
+                solvateBox mol TIP3PBOX 10
+                addions mol Na+ 0
+                addions mol Cl- 0
+                saveamberparm mol $prmtop $inpcrd
+                savepdb mol $solvated_pdb
+                quit
+            " > tleap.in
+            tleap -f tleap.in > tleap.log
         "#
     }
 }
@@ -67,6 +68,7 @@ fn parmed(prmtop: PathBuf, inpcrd: PathBuf, molecule_name: &str) -> WorkflowResu
         outputs = [gro, topol],
         dependencies = ["!", "python", "py:parmed"],
         process = r#"
+            PATH=/arc/project/st-shallam-1/igem-2025/molecular-dynamics/.pixi/envs/default/bin/:$PATH
             echo "
 import parmed as pmd
 parm = pmd.load_file('$prmtop', '$inpcrd')

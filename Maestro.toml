@@ -5,14 +5,15 @@ staging_mode = "Copy"
 [executor.slurm]
 type = "Slurm"
 staging_mode = "Copy"
-modules = ["gcc", "cuda]
+modules = ["gcc", "cuda"]
 account = "st-shallam-1-gpu"
 nodes = 1
 tasks = 1
 cpus = 12
-memory = { type = "per_cpu", amount = 64000 }
+memory = { type = "per_node", amount = 64000 }
 gpus = 1
 time = { hours = 6 }
 
 [args]
-input_files = "data/input1.pdb"
+input_files = "data/1v9e.pdb"
+

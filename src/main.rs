@@ -68,11 +68,11 @@ fn parmed(prmtop: PathBuf, inpcrd: PathBuf, molecule_name: &str) -> WorkflowResu
         dependencies = ["!", "python", "py:parmed"],
         process = r#"
             echo "
-                import parmed as pmd
-                parm = pmd.load_file('$prmtop', '$inpcrd')
+import parmed as pmd
+parm = pmd.load_file('$prmtop', '$inpcrd')
 
-                parm.save('$gro', format='gro')
-                parm.save('$topol', format='gromacs')
+parm.save('$gro', format='gro')
+parm.save('$topol', format='gromacs')
             " > parmed_convert.py
             python parmed_convert.py
         "#
@@ -80,10 +80,22 @@ fn parmed(prmtop: PathBuf, inpcrd: PathBuf, molecule_name: &str) -> WorkflowResu
 }
 
 fn gromacs(gro: PathBuf, topol: PathBuf, molecule_name: &str) -> WorkflowResult {
+    let minim_mdp = Path::new("data/minim.mdp");
+    let nvt_mdp = Path::new("data/nvt.mdp");
+    let npt_mdp = Path::new("data/npt.mdp");
+    let md_mdp = Path::new("data/md.mdp");
+
     workflow! {
         name = format!("gromacs_{molecule_name}"),
         executor = "slurm",
-        inputs = [gro, topol],
+        inputs = [
+            gro, 
+            topol, 
+            minim_mdp, 
+            nvt_mdp, 
+            npt_mdp, 
+            md_mdp, 
+        ],
         process = r#"
             set -euo pipefail
 
@@ -92,19 +104,19 @@ fn gromacs(gro: PathBuf, topol: PathBuf, molecule_name: &str) -> WorkflowResult 
             export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK
 
             echo "===> Step 1: Energy Minimization"
-            gmx grompp -f minim.mdp -c system.gro -p topol.top -o em.tpr -maxwarn 1
+            gmx grompp -f "$minim_mdp" -c "$gro" -p "$topol" -o em.tpr -maxwarn 1
             gmx mdrun -deffnm em -ntmpi 1 -ntomp "$OMP_NUM_THREADS" -nb gpu -pin on
 
             echo "===> Step 2: NVT Equilibration"
-            gmx grompp -f nvt.mdp -c em.gro -r em.gro -p topol.top -o nvt.tpr -maxwarn 1
+            gmx grompp -f "$nvt_mdp" -c em.gro -r em.gro -p "$topol" -o nvt.tpr -maxwarn 1
             gmx mdrun -deffnm nvt -ntmpi 1 -ntomp "$OMP_NUM_THREADS" -nb gpu -pin on
 
             echo "===> Step 3: NPT Equilibration"
-            gmx grompp -f npt.mdp -c nvt.gro -r nvt.gro -t nvt.cpt -p topol.top -o npt.tpr -maxwarn 1
+            gmx grompp -f "$npt_mdp" -c nvt.gro -r nvt.gro -t nvt.cpt -p "$topol" -o npt.tpr -maxwarn 1
             gmx mdrun -deffnm npt -ntmpi 1 -ntomp "$OMP_NUM_THREADS" -nb gpu -pin on
 
             echo "===> Step 4: Production MD"
-            gmx grompp -f md.mdp -c npt.gro -t npt.cpt -p topol.top -o md.tpr -maxwarn 1
+            gmx grompp -f "$md_mdp" -c npt.gro -t npt.cpt -p "$topol" -o md.tpr -maxwarn 1
             gmx mdrun -deffnm md -ntmpi 1 -ntomp "$OMP_NUM_THREADS" -nb gpu -pin on
 
             echo "===> MD Simulation Complete"

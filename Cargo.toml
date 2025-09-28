@@ -5,8 +5,6 @@ edition = "2024"
 
 [dependencies]
 maestro = { git = "https://github.com/seb-hyland/maestro.git", optional = true }
-openssl-sys = { version = "*", features = ["vendored"] }
-ssh2 = "0.9.5"
 
 [features]
 default = ["dep:maestro"]

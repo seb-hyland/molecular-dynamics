@@ -39,7 +39,7 @@ checksum = "2fd1289c04a9ea8cb22300a459a72a385d7c73d3259e2ed7dcb2af674838cfa9"
 [[package]]
 name = "dagger"
 version = "0.1.7"
-source = "git+https://github.com/seb-hyland/dagger.git#28a5ee90299bc280a2072633c6a21c855e196984"
+source = "git+https://github.com/seb-hyland/dagger.git#6345e4d56926478924d304dec36647d73a82a285"
 dependencies = [
  "dagger-macros",
  "layout-rs",
@@ -48,7 +48,7 @@ dependencies = [
 [[package]]
 name = "dagger-macros"
 version = "0.1.0"
-source = "git+https://github.com/seb-hyland/dagger.git#28a5ee90299bc280a2072633c6a21c855e196984"
+source = "git+https://github.com/seb-hyland/dagger.git#6345e4d56926478924d304dec36647d73a82a285"
 dependencies = [
  "quote",
  "syn",
@@ -162,8 +162,8 @@ dependencies = [
 
 [[package]]
 name = "maestro"
-version = "0.2.4"
-source = "git+https://github.com/seb-hyland/maestro.git#5178f12066abf1f98bba085bf75542d3622c5860"
+version = "0.2.6"
+source = "git+https://github.com/seb-hyland/maestro.git#6d6bdee6d24840620275906ad71b3a6cb0a323d7"
 dependencies = [
  "dagger",
  "inventory",
@@ -176,7 +176,7 @@ dependencies = [
 [[package]]
 name = "maestro_macros"
 version = "0.1.0"
-source = "git+https://github.com/seb-hyland/maestro.git#5178f12066abf1f98bba085bf75542d3622c5860"
+source = "git+https://github.com/seb-hyland/maestro.git#6d6bdee6d24840620275906ad71b3a6cb0a323d7"
 dependencies = [
  "fxhash",
  "proc-macro2",
@@ -198,9 +198,9 @@ dependencies = [
 
 [[package]]
 name = "openssl-src"
-version = "300.5.1+3.5.1"
+version = "300.5.2+3.5.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "735230c832b28c000e3bc117119e6466a663ec73506bc0a9907ea4187508e42a"
+checksum = "d270b79e2926f5150189d475bc7e9d2c69f9c4697b185fa917d5a32b792d21b4"
 dependencies = [
  "cc",
 ]
@@ -332,9 +332,9 @@ checksum = "94143f37725109f92c262ed2cf5e59bce7498c01bcc1502d7b9afe439a4e9f49"
 
 [[package]]
 name = "serde"
-version = "1.0.226"
+version = "1.0.228"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "0dca6411025b24b60bfa7ec1fe1f8e710ac09782dca409ee8237ba74b51295fd"
+checksum = "9a8e94ea7f378bd32cbbd37198a4a91436180c5bb472411e48b5ec2e2124ae9e"
 dependencies = [
  "serde_core",
  "serde_derive",
@@ -342,18 +342,18 @@ dependencies = [
 
 [[package]]
 name = "serde_core"
-version = "1.0.226"
+version = "1.0.228"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ba2ba63999edb9dac981fb34b3e5c0d111a69b0924e253ed29d83f7c99e966a4"
+checksum = "41d385c7d4ca58e59fc732af25c3983b67ac852c1a25000afe1175de458b67ad"
 dependencies = [
  "serde_derive",
 ]
 
 [[package]]
 name = "serde_derive"
-version = "1.0.226"
+version = "1.0.228"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "8db53ae22f34573731bafa1db20f04027b2d25e02d8205921b569171699cdb33"
+checksum = "d540f220d3187173da220f885ab66608367b6574e925011a9353e4badda91d79"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -372,7 +372,7 @@ dependencies = [
 [[package]]
 name = "session_gen"
 version = "0.1.0"
-source = "git+https://github.com/seb-hyland/maestro.git#5178f12066abf1f98bba085bf75542d3622c5860"
+source = "git+https://github.com/seb-hyland/maestro.git#6d6bdee6d24840620275906ad71b3a6cb0a323d7"
 dependencies = [
  "rand",
 ]

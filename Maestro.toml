@@ -1,0 +1,6 @@
+[executor]
+type = "Slurm"
+staging_mode = "Copy"
+
+[args]
+input_files = ""

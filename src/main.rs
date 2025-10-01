@@ -1,21 +1,19 @@
 use maestro::prelude::*;
-use std::{ffi::OsStr, path::Path};
 
 #[maestro::main]
 fn main() {
-    let input_files = arg!("input_files").split(',').map(Path::new).map(|path| {
-        (
-            path,
-            path.file_stem()
-                .expect("All paths in input_files should have a resolveable filename!"),
-        )
-    });
-    for (path, _) in input_files.clone() {
-        assert!(path.exists(), "All paths in input_files must exist!")
-    }
+    let init_msg: &str = arg!("init_msg");
+    let input_files: &[&Path] = inputs!("input_files");
 
-    let workflow = |(path, name): (&Path, &OsStr)| -> Result<PathBuf, io::Error> {
-        let molecule_name = &name.to_string_lossy();
+    println!("{init_msg}");
+
+    let workflow = |path: &&Path| -> NodeResult<PathBuf> {
+        let molecule_name = &path
+            .file_stem()
+            .expect("All paths in input_files should have a resolveable filename!")
+            .to_string_lossy();
+        println!("Started workflow {molecule_name:?}");
+
         let [prmtop, inpcrd] = tleap(path, molecule_name)?.into_array();
         let [gro, topol] = parmed(prmtop, inpcrd, molecule_name)?.into_array();
         let [gromacs_workdir] = gromacs(gro, topol, molecule_name)?.into_array();
@@ -33,13 +31,14 @@ fn tleap(input: &Path, molecule_name: &str) -> WorkflowResult {
     let inpcrd = Path::new("system.inpcrd");
     let solvated_pdb = Path::new("system_solvated.pdb");
 
-    workflow! {
+    process! {
+        /// Runs tleap to prepare input files for MD simulation
         name = format!("tleap_{molecule_name}"),
         executor = "direct",
         inputs = [input],
         outputs = [prmtop, inpcrd, solvated_pdb],
         dependencies = ["!", "tleap"],
-        process = r#"
+        script = r#"
             PATH=/arc/project/st-shallam-1/igem-2025/molecular-dynamics/.pixi/envs/default/bin/:$PATH
             echo "
                 source leaprc.water.tip3p
@@ -61,13 +60,14 @@ fn parmed(prmtop: PathBuf, inpcrd: PathBuf, molecule_name: &str) -> WorkflowResu
     let gro = Path::new("system.gro");
     let topol = Path::new("topol.top");
 
-    workflow! {
+    process! {
+        /// Executes parmed to convert from AMBER into a GROMACS-compatible format
         name = format!("parmed_{molecule_name}"),
         executor = "direct",
         inputs = [prmtop, inpcrd],
         outputs = [gro, topol],
         dependencies = ["!", "python", "py:parmed"],
-        process = r#"
+        script = r#"
             PATH=/arc/project/st-shallam-1/igem-2025/molecular-dynamics/.pixi/envs/default/bin/:$PATH
             echo "
 import parmed as pmd
@@ -87,18 +87,19 @@ fn gromacs(gro: PathBuf, topol: PathBuf, molecule_name: &str) -> WorkflowResult 
     let npt_mdp = Path::new("data/npt.mdp");
     let md_mdp = Path::new("data/md.mdp");
 
-    workflow! {
+    process! {
+        /// Executes the primary GROMACS molecular dynamics process
         name = format!("gromacs_{molecule_name}"),
         executor = "slurm",
         inputs = [
-            gro, 
-            topol, 
-            minim_mdp, 
-            nvt_mdp, 
-            npt_mdp, 
-            md_mdp, 
+            gro,
+            topol,
+            minim_mdp,
+            nvt_mdp,
+            npt_mdp,
+            md_mdp,
         ],
-        process = r#"
+        script = r#"
             set -euo pipefail
 
             echo "===> Setting environment variables!"

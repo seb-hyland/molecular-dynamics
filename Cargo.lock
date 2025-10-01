@@ -98,8 +98,8 @@ checksum = "58f929b4d672ea937a23a1ab494143d968337a5f47e56d0815df1e0890ddf174"
 
 [[package]]
 name = "maestro"
-version = "0.2.6"
-source = "git+https://github.com/seb-hyland/maestro.git#6d6bdee6d24840620275906ad71b3a6cb0a323d7"
+version = "0.2.10"
+source = "git+https://github.com/seb-hyland/maestro.git#b086cf4c56528b73d4f438d02394d628c59d4a07"
 dependencies = [
  "dagger",
  "inventory",
@@ -112,7 +112,7 @@ dependencies = [
 [[package]]
 name = "maestro_macros"
 version = "0.1.0"
-source = "git+https://github.com/seb-hyland/maestro.git#6d6bdee6d24840620275906ad71b3a6cb0a323d7"
+source = "git+https://github.com/seb-hyland/maestro.git#b086cf4c56528b73d4f438d02394d628c59d4a07"
 dependencies = [
  "fxhash",
  "proc-macro2",
@@ -150,9 +150,9 @@ dependencies = [
 
 [[package]]
 name = "quote"
-version = "1.0.40"
+version = "1.0.41"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1885c039570dc00dcb4ff087a89e185fd56bae234ddc7f056a945bf36467248d"
+checksum = "ce25767e7b499d1b604768e7cde645d14cc8584231ea6b295e9c9eb22c02e1d1"
 dependencies = [
  "proc-macro2",
 ]
@@ -240,7 +240,7 @@ dependencies = [
 [[package]]
 name = "session_gen"
 version = "0.1.0"
-source = "git+https://github.com/seb-hyland/maestro.git#6d6bdee6d24840620275906ad71b3a6cb0a323d7"
+source = "git+https://github.com/seb-hyland/maestro.git#b086cf4c56528b73d4f438d02394d628c59d4a07"
 dependencies = [
  "rand",
 ]

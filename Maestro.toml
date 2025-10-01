@@ -14,6 +14,5 @@ memory = { type = "per_node", amount = 64000 }
 gpus = 1
 time = { hours = 6 }
 
-[args]
-input_files = "data/1v9e_ph4.pdb,data/1v9e_ph10.pdb"
-
+[inputs]
+input_files = ["data/1v9e_ph4.pdb", "data/1v9e_ph10.pdb"]

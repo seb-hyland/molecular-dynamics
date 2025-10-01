@@ -1,0 +1,15 @@
+# Runs tleap to prepare input files for MD simulation
+["src/main.rs:41:17"]
+executor = "direct"
+deps = ["tleap"]
+
+# Executes parmed to convert from AMBER into a GROMACS-compatible format
+["src/main.rs:70:17"]
+executor = "direct"
+deps = ["python", "py:parmed"]
+
+# Executes the primary GROMACS molecular dynamics process
+["src/main.rs:102:17"]
+executor = "slurm"
+deps = ["gmx"]
+
